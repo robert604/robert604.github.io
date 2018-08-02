@@ -75,7 +75,7 @@ When training for the actual test set the entire train set was used for training
 
 In addition to the data made available for the competition I also made use of the publicly available data on github for creating the replacement dictionaries.  This was an improvement over making the dictionaries using only the train set.
 
-The code is available at (https://github.com/robert604/text_normalization)
+The code is available at https://github.com/robert604/text_normalization
 
 
 
