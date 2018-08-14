@@ -17,6 +17,7 @@ In order to use better features I came up with features that are based on the he
 ![circle](/images/trackml/helix_circle.jpg)
 
 Since the unrolling operation moves the particle position back to the starting point at the origin the angle made with respect to the origin is the same as the angle made by the tangent to the circle at the origin.  This allows us to obtain the angle made by the radius of the circle with respect to the origin, theta is offset from the tangent by 90 degrees.  Since r and phi can be computed from the x and y coordinates of the hit point we can then calculate the value of r0 (or it’s inverse). The following equations are used in calculating features for the dbscan clustering algorithm.
+
 ![equations](/images/trackml/equations.jpg)
 
 The three features selected for dbscan are ax,ay and 1/r0.  The ax and ay are chosen instead of the tangent angle to avoid issues with two angles of different values even though they are very similar, such as 0 and 359 degrees.
