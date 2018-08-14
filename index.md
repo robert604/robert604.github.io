@@ -3,10 +3,10 @@ This is my 16th place solution for the [TrackML Particle Tracking Challenge](htt
 
 The Challenge
 The challenge is to identify the tracks of particles that are created from colliding protons.  The collisions take place at the origin (xyz coordinates) inside a cylindrical structure that is made up of many detectors.  These detectors provide the position of a particle as it moves through them.  Each detected position of a particle is referred to as a ‘hit’.  The detectors are organized as ‘volumes’, which contain ‘layers’, which contain ‘modules’, each module is composed of many detector cells.  The shape of a volume can be cylindrical or disc shaped seen in fig 1.  The particles move through a relatively constant magnetic field so the expected paths are helical depending on the amount of charge on the particle.
-                    ![Detector](/images/trackml/tml_detector_plane.jpg)
+![Detector](/images/trackml/tml_detector_plane.jpg)
 
 The data which is provided is divided into many csv files, each of which contains the hit data for one collision event.  The task is to assign a track to each hit where each track represents one particle.  This is done separately for each event.  There are also supplementary files for each event that provide the ground-truth, particle and cell information for each event.  The hit data consists mainly of the x,y,z coordinates for the detected hit as well as the volume, layer and module information for the detector involved.  An example of this is shown in fig 2.
-                    ![hits](/images/trackml/hits_data.jpg)
+![hits](/images/trackml/hits_data.jpg)
 
 The solution approach
 The approaches that most interested me were neural nets, hough transforms, and clustering.  I didn’t think that it would be possible to get a good score using a strictly neural net approach such as a cnn.  A cnn is good at finding useful features in the data as it is being trained.  But in this case we actually have exact information to create features from the data, namely the helical path that a particle takes as it moves.  A neural net for clustering the hit data after features have been created might be more promising, but I did not spend time on this approach.  I experimented with a hough transform approach but found that the large number of calculations just took too much time to make it practical.
@@ -14,10 +14,10 @@ The approaches that most interested me were neural nets, hough transforms, and c
 The approach that I settled on was clustering using dbscan.  My script used the helix unrolling approach provided in  Grzegorz Sionkowski’s script.  Since particles move in a helix along the z axis, they are rotating around a center in the xy plane.  This means that at any position on the helix a particle has rotated around the center of a circle by an amount that is proportional to the distance traveled along the z axis.  So subtracting this angle of rotation should bring the particle back to the starting angle at the origin.  The clustering is then done on features calculated after this unrolling.  The features discussed on the forums included the starting angle and the ratio of z to the xy distance or the xyz distance.  The ratio features don’t take into account the curvature of the track so they will not work that well for tracks that have a more pronounced curvature.
 
 In order to use better features I came up with features that are based on the helical nature of the tracks.  In the xy plane a particle travels in a circle as it moves along the helix.  This is illustrated in fig 3.
-                    ![circle](/images/trackml/helix_circle.jpg)
+![circle](/images/trackml/helix_circle.jpg)
 
 Since the unrolling operation moves the particle position back to the starting point at the origin the angle made with respect to the origin is the same as the angle made by the tangent to the circle at the origin.  This allows us to obtain the angle made by the radius of the circle with respect to the origin, theta is offset from the tangent by 90 degrees.  Since r and phi can be computed from the x and y coordinates of the hit point we can then calculate the value of r0 (or it’s inverse).  The following equations are used in calculating features for the dbscan clustering algorithm.
-                    ![circle](/images/trackml/equations.jpg)
+![equations](/images/trackml/equations.jpg)
 
 The three features selected for dbscan are ax,ay and 1/r0.  The ax and ay are chosen instead of the tangent angle to avoid issues with two angles of different values even though they are very similar, such as 0 and 359 degrees.
 
