@@ -39,7 +39,6 @@ https://www.kaggle.com/c/trackml-particle-identification/discussion/58194
 
 
 
-
 ## Text Normalization Challenge
 This is my 19th place solution for the  [english text normalization challenge](https://www.kaggle.com/c/text-normalization-challenge-english-language) on Kaggle.  The task is to convert written text into a spoken form.  The data consists of sentences that have been broken down into tokens where each token has to be normalized.  An example of a sentence from the training data is shown below.
 
