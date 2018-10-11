@@ -1,6 +1,6 @@
 
 
-======================================================================================================================
+=========================================================================================
 # Trackml Challenge
 This is my 16th place solution for the [TrackML Particle Tracking Challenge](https://www.kaggle.com/c/trackml-particle-identification) on Kaggle.
 
